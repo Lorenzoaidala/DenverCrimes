@@ -67,7 +67,7 @@ public class Model {
 	
 		if(parziale.get(parziale.size()-1).equals(destinazione)) {
 			if(parziale.size()>percorsoMigliore.size())
-				percorsoMigliore = parziale;
+				percorsoMigliore = new ArrayList<String>(parziale);
 			return;
 		}
 		
@@ -79,6 +79,9 @@ public class Model {
 			}
 				
 		}
+	}
+	public List<String> getCategorie(){
+		return dao.getAllCategorie();
 	}
 	
 	

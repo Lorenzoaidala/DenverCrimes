@@ -5,8 +5,11 @@
 package it.polito.tdp.crimes;
 
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.crimes.model.Adiacenza;
 import it.polito.tdp.crimes.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,10 +28,10 @@ public class FXMLController {
     private URL location;
 
     @FXML // fx:id="boxCategoria"
-    private ComboBox<?> boxCategoria; // Value injected by FXMLLoader
+    private ComboBox<String> boxCategoria; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxMese"
-    private ComboBox<?> boxMese; // Value injected by FXMLLoader
+    private ComboBox<Integer> boxMese; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnAnalisi"
     private Button btnAnalisi; // Value injected by FXMLLoader
@@ -50,6 +53,18 @@ public class FXMLController {
     @FXML
     void doCreaGrafo(ActionEvent event) {
 
+    	txtResult.clear();
+    	if(boxMese.getValue()==null || boxCategoria.getValue()==null) {
+    		txtResult.setText("ERRORE - seleziona un mese ed una categoria di reato");
+    		return;
+    	}
+    	String categoria = boxCategoria.getValue();
+    	int mese = boxMese.getValue();
+    	
+    	model.creaGrafo(categoria, mese);
+    	for(Adiacenza a : model.getArchiDatoPesoMedio()) {
+    		txtResult.appendText(String.format("Reato 1: %s - Reato 2: %s. Numeri di crimini avvenuti nel mese scelto: %d. \n", a.getType_1(),a.getType_2(),(int)a.getPeso()));
+    	}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -63,7 +78,17 @@ public class FXMLController {
 
     }
     
+    public void setBoxMesi(){
+    	List<Integer> mesi = new LinkedList<Integer>();
+    	for(int i =1; i<=12;i++) {
+    		mesi.add(i);
+    	}
+    	boxMese.getItems().addAll(mesi);
+    }
+    
     public void setModel(Model model) {
     	this.model = model;
+    	boxCategoria.getItems().addAll(model.getCategorie());
+    	setBoxMesi();
     }
 }

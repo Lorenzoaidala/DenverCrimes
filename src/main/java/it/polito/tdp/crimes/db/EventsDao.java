@@ -11,18 +11,18 @@ import it.polito.tdp.crimes.model.Event;
 
 
 public class EventsDao {
-	
+
 	public List<Event> listAllEvents(){
 		String sql = "SELECT * FROM events" ;
 		try {
 			Connection conn = DBConnect.getConnection() ;
 
 			PreparedStatement st = conn.prepareStatement(sql) ;
-			
+
 			List<Event> list = new ArrayList<>() ;
-			
+
 			ResultSet res = st.executeQuery() ;
-			
+
 			while(res.next()) {
 				try {
 					list.add(new Event(res.getLong("incident_id"),
@@ -44,7 +44,7 @@ public class EventsDao {
 					System.out.println(res.getInt("id"));
 				}
 			}
-			
+
 			conn.close();
 			return list ;
 
@@ -54,21 +54,21 @@ public class EventsDao {
 			return null ;
 		}
 	}
-	
+
 	public List<String> getVertici(String category_id, int mese) {
 		String sql ="SELECT DISTINCT offense_type_id "
 				+ "FROM EVENTS "
 				+ "WHERE offense_category_id = ? "
 				+ "AND MONTH(reported_date) = ?";
 		List<String> result = new LinkedList<String>();
-		
+
 		try {
 			Connection conn = DBConnect.getConnection();
 			PreparedStatement st = conn.prepareStatement(sql);
 			st.setString(1, category_id);
 			st.setInt(2, mese);
 			ResultSet rs = st.executeQuery();
-			
+
 			while (rs.next()) {
 				result.add(rs.getString("offense_type_id"));
 			}
@@ -76,43 +76,63 @@ public class EventsDao {
 			rs.close();
 			conn.close();
 			return result;
-			
+
 		} catch(SQLException e) {
 			throw new RuntimeException("Error Connection Database");
 		}
 	}
-		
-		public List<Adiacenza> getArchi(String category_id, int mese) {
-			String sql ="SELECT e1.offense_type_id as id1, e2.offense_type_id as id2, COUNT(DISTINCT(e1.neighborhood_id)) AS peso "
-					+ "FROM events e1, events e2 "
-					+ "WHERE  e1.offense_category_id=? AND e1.offense_category_id=e2.offense_category_id "
-					+ "AND e1.offense_type_id>e2.offense_type_id "
-					+ "AND MONTH(e1.reported_date)=? AND MONTH(e1.reported_date)=MONTH(e2.reported_date) "
-					+ "AND e1.neighborhood_id=e2.neighborhood_id "
-					+ "GROUP BY e1.offense_type_id, e2.offense_type_id";
-			List<Adiacenza> result = new LinkedList<Adiacenza>();
-			
-			try {
-				Connection conn = DBConnect.getConnection();
-				PreparedStatement st = conn.prepareStatement(sql);
-				st.setString(1, category_id);
-				st.setInt(2, mese);
-				ResultSet rs = st.executeQuery();
-				
-				while(rs.next()) {
-					
-						result.add(new Adiacenza(rs.getString("id1"), rs.getString("id2"), rs.getInt("peso")));
-					
-				}
-					st.close();
-					rs.close();
-					conn.close();
-				
-				return result;
-			} catch(SQLException e) {
-				throw new RuntimeException("Error Connection Database");
+
+	public List<Adiacenza> getArchi(String category_id, int mese) {
+		String sql ="SELECT e1.offense_type_id as id1, e2.offense_type_id as id2, COUNT(DISTINCT(e1.neighborhood_id)) AS peso "
+				+ "FROM events e1, events e2 "
+				+ "WHERE  e1.offense_category_id=? AND e1.offense_category_id=e2.offense_category_id "
+				+ "AND e1.offense_type_id>e2.offense_type_id "
+				+ "AND MONTH(e1.reported_date)=? AND MONTH(e1.reported_date)=MONTH(e2.reported_date) "
+				+ "AND e1.neighborhood_id=e2.neighborhood_id "
+				+ "GROUP BY e1.offense_type_id, e2.offense_type_id";
+		List<Adiacenza> result = new LinkedList<Adiacenza>();
+
+		try {
+			Connection conn = DBConnect.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setString(1, category_id);
+			st.setInt(2, mese);
+			ResultSet rs = st.executeQuery();
+
+			while(rs.next()) {
+
+				result.add(new Adiacenza(rs.getString("id1"), rs.getString("id2"), rs.getInt("peso")));
+
 			}
+			st.close();
+			rs.close();
+			conn.close();
+
+			return result;
+		} catch(SQLException e) {
+			throw new RuntimeException("Error Connection Database");
 		}
-	
+	}
+	public List<String> getAllCategorie(){
+		String sql ="SELECT DISTINCT offense_category_id FROM events";
+		List<String> result = new ArrayList<String>();
+
+		try {
+			Connection conn = DBConnect.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				result.add(rs.getString("offense_category_id"));
+				
+			}
+			conn.close();
+			return result;
+		
+	}catch(SQLException e) {
+		throw new RuntimeException("Error Connection Database");
+	}
+}
+
 
 }
