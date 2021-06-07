@@ -1,5 +1,6 @@
 package it.polito.tdp.crimes.model;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class Model {
 
 	private Graph<String,DefaultWeightedEdge> grafo;
 	private EventsDao dao;
+	private List<String> percorsoMigliore;
 
 	public Model() {
 		dao = new EventsDao();
@@ -52,4 +54,33 @@ public class Model {
 		return result;
 		
 	}
+	
+	public List<String> trovaPercorso(String partenza, String destinazione){
+		this.percorsoMigliore = new ArrayList<String>();
+		List<String> parziale = new ArrayList<String>();
+		this.percorsoMigliore.add(partenza);
+		cerca(destinazione,parziale);
+		return percorsoMigliore;
+	}
+
+	private void cerca(String destinazione, List<String> parziale) {
+	
+		if(parziale.get(parziale.size()-1).equals(destinazione)) {
+			if(parziale.size()>percorsoMigliore.size())
+				percorsoMigliore = parziale;
+			return;
+		}
+		
+		for(String s : Graphs.neighborListOf(this.grafo, parziale.get(parziale.size()-1))) {
+			if(!parziale.contains(s)) {
+				parziale.add(s);
+				cerca(destinazione,parziale);
+				parziale.remove(parziale.size()-1);
+			}
+				
+		}
+	}
+	
+	
+	
 }
