@@ -3,8 +3,8 @@ package it.polito.tdp.crimes.model;
 public class Adiacenza {
 	private String type_1;
 	private String type_2;
-	private int peso;
-	public Adiacenza(String type_1, String type_2, int peso) {
+	private double peso;
+	public Adiacenza(String type_1, String type_2, double peso) {
 		super();
 		this.type_1 = type_1;
 		this.type_2 = type_2;
@@ -22,7 +22,7 @@ public class Adiacenza {
 	public void setType_2(String type_2) {
 		this.type_2 = type_2;
 	}
-	public int getPeso() {
+	public double getPeso() {
 		return peso;
 	}
 	public void setPeso(int peso) {

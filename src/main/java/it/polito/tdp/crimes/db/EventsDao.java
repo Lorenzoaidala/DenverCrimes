@@ -100,14 +100,14 @@ public class EventsDao {
 				ResultSet rs = st.executeQuery();
 				
 				while(rs.next()) {
-					if(rs.getInt("peso")>0) {
-						result.add(new Adiacenza(rs.getString("id1"), rs.getString("id2"), rs.getInt("peso")));
-					}
 					
+						result.add(new Adiacenza(rs.getString("id1"), rs.getString("id2"), rs.getInt("peso")));
+					
+				}
 					st.close();
 					rs.close();
 					conn.close();
-				}
+				
 				return result;
 			} catch(SQLException e) {
 				throw new RuntimeException("Error Connection Database");
