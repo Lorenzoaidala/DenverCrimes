@@ -30,7 +30,7 @@ public class Adiacenza {
 	}
 	@Override
 	public String toString() {
-		return "Adiacenza [type_1=" + type_1 + ", type_2=" + type_2 + ", peso=" + peso + "]";
+		return "Adiacenza [type_1=" + type_1 + ", type_2=" + type_2 + ", peso=" + peso + "]\n";
 	}
 
 	

@@ -37,7 +37,7 @@ public class FXMLController {
     private Button btnAnalisi; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxArco"
-    private ComboBox<?> boxArco; // Value injected by FXMLLoader
+    private ComboBox<Adiacenza> boxArco; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnPercorso"
     private Button btnPercorso; // Value injected by FXMLLoader
@@ -63,8 +63,8 @@ public class FXMLController {
     	
     	model.creaGrafo(categoria, mese);
     	for(Adiacenza a : model.getArchiDatoPesoMedio()) {
-    		txtResult.appendText(String.format("Reato 1: %s - Reato 2: %s. Numeri di crimini avvenuti nel mese scelto: %d. \n", a.getType_1(),a.getType_2(),(int)a.getPeso()));
-    	}
+    		txtResult.appendText(a.toString());
+    		}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete

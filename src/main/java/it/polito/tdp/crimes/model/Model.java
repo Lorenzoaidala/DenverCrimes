@@ -39,14 +39,14 @@ public class Model {
 	
 	public List<Adiacenza> getArchiDatoPesoMedio(){
 		List<Adiacenza> result = new LinkedList<Adiacenza>();
-		int pesoMedio = 0;
+		double pesoMedio = 0.0;
 		for(DefaultWeightedEdge a :this.grafo.edgeSet()) {
 			pesoMedio+=this.grafo.getEdgeWeight(a);
 		}
 		pesoMedio = pesoMedio/this.grafo.edgeSet().size();
 		
 		for(DefaultWeightedEdge a :this.grafo.edgeSet()) {
-			if(this.grafo.getEdgeWeight(a)>=pesoMedio) {
+			if(this.grafo.getEdgeWeight(a)>pesoMedio) {
 				Adiacenza temp = new Adiacenza(this.grafo.getEdgeSource(a),this.grafo.getEdgeTarget(a),this.grafo.getEdgeWeight(a));
 				result.add(temp);
 			}
