@@ -48,6 +48,16 @@ public class FXMLController {
     @FXML
     void doCalcolaPercorso(ActionEvent event) {
 
+    	Adiacenza arco = boxArco.getValue();
+    	if(arco==null) {
+    		txtResult.setText("Errore - Seleziona un arco");
+    		return;
+    		
+    	}
+    	List<String> percorso = model.trovaPercorso(arco.getType_1(), arco.getType_2());
+    	for(String s:percorso) {
+    		txtResult.appendText(s+"; ");
+    	}
     }
 
     @FXML
@@ -65,6 +75,7 @@ public class FXMLController {
     	for(Adiacenza a : model.getArchiDatoPesoMedio()) {
     		txtResult.appendText(a.toString());
     		}
+    	boxArco.getItems().addAll(model.getArchiDatoPesoMedio());
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete

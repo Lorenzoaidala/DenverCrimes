@@ -58,7 +58,7 @@ public class Model {
 	public List<String> trovaPercorso(String partenza, String destinazione){
 		this.percorsoMigliore = new ArrayList<String>();
 		List<String> parziale = new ArrayList<String>();
-		this.percorsoMigliore.add(partenza);
+		parziale.add(partenza);
 		cerca(destinazione,parziale);
 		return percorsoMigliore;
 	}
